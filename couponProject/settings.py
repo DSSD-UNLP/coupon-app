@@ -6,7 +6,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['grupo12-dssd.herokuapp.com']
 
 INSTALLED_APPS = [
     'django_mysql',
