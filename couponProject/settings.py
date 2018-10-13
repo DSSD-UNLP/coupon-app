@@ -51,20 +51,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'couponProject.wsgi.application'
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': config.get('DATABASE_ENGINE'),
-        'NAME': config.get('DATABASE_NAME'),
-        'USER': config.get('DATABASE_USER'),
-        'PASSWORD': config.get('DATABASE_PASSWORD'),
-        'HOST': config.get('DATABASE_HOST'),
-        'OPTIONS': {
-            'charset': 'utf8mb4'
-        }
-    }
-}
-
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
