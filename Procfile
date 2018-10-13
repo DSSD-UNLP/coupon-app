@@ -1,1 +1,1 @@
-web: gunicorn couponProject.wsgi
+web: python manage.py runserver
