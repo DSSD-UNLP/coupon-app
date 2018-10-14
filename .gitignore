@@ -2,7 +2,7 @@
 stockProject/settings_secret.yml
 
 ### OSX ###
-# .DS_Store
+.DS_Store
 .AppleDouble
 .LSOverride
 
