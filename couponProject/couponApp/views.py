@@ -14,9 +14,7 @@ class CouponList(APIView):
         serializer = CouponSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -47,14 +45,15 @@ class CouponDetail(APIView):
         if coupon.availability > 0:
             coupon.availability = coupon.availability-1
             coupon.save()
-            message = "Updated successfully"
+            message = "Se decremento en uno la cantidad"
+            status_message = "Ok"
+            status_code = status.HTTP_200_OK
         else:
-            message="Este cupon ya fue usado"
-        #serializer = CouponSerializer(coupon, data=request.data)
-        #if serializer.is_valid():
-        #    serializer.save()
-        response_message = {"status":"ok", "message":message}
-        return Response(response_message, status=status.HTTP_400_BAD_REQUEST)
+            status_code = status.HTTP_400_BAD_REQUEST
+            status_message = "Error"
+            message = "Este cupon ya fue usado"
+        response_message = {"status":status_message, "message":message}
+        return Response(response_message, status=status_code)
 
 
 
