@@ -6,6 +6,11 @@ from django.contrib.auth.hashers import make_password
 
 
 class CouponSerializer(serializers.ModelSerializer):
+    availability = serializers.SerializerMethodField()
+
     class Meta:
-        model = Coupon
+        model  = Coupon
         fields = ('name', 'percentage', 'availability')
+
+    def get_availability(self, obj):
+        return obj.availability != 0

@@ -1,59 +1,57 @@
-from couponProject.couponApp.models import Coupon
+from rest_framework.views               import APIView
+from django.contrib.auth.hashers        import check_password
+from couponProject.couponApp.models     import Coupon
 from couponProject.couponApp.serializer import CouponSerializer
-from django.http import Http404
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from django.shortcuts import get_list_or_404, get_object_or_404
-from django.contrib.auth.hashers import check_password
+from django.shortcuts                   import get_list_or_404, get_object_or_404
+from django.http                        import Http404
+from rest_framework.response            import Response
+from rest_framework                     import status
+
 import code
 
-class CouponList(APIView):
+class CouponCreate(APIView):
     
-    def post(self, request, format=None):
-        serializer = CouponSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def post(self, request, format = None):
+        serializer = CouponSerializer(data = request.data)
+
+        if not serializer.is_valid():
+            return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)
+
+        serializer.save()
+        return Response(serializer.data, status = status.HTTP_201_CREATED)
 
 
 class CouponDetail(APIView):
 
-    def makeResponse(self,serializer):
-        if(serializer.data['availability']!=0):
-            availability = True
-        else:
-            availability = False
-        response_message = {"name":serializer.data['name'], "availability": availability, "percentage":serializer.data['percentage']}
-        return response_message
-
     def get(self, request, name):
-        coupon = get_object_or_404(Coupon, name=name)
+        coupon     = get_object_or_404(Coupon, name = name)
         serializer = CouponSerializer(coupon)
-        response_message = self.makeResponse(serializer)
-        return Response(response_message)
 
-    def delete(self, request, pk, format=None):
-        coupon = get_object_or_404(Coupon, pk=pk)
+        return Response(serializer.data, status = status.HTTP_200_OK)
+        
+    def delete(self, request, name, format = None):
+        coupon     = get_object_or_404(Coupon, name = name)
         serializer = CouponSerializer(coupon)
         coupon.delete()
-        return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
+
+        return Response(serializer.data, status = status.HTTP_204_NO_CONTENT)
 
     def patch(self,request,name):
-        coupon = get_object_or_404(Coupon,name=name)
+        coupon = get_object_or_404(Coupon, name = name)
         if coupon.availability > 0:
-            coupon.availability = coupon.availability-1
+            coupon.availability = coupon.availability - 1
             coupon.save()
-            message = "Se decremento en uno la cantidad"
-            status_message = "Ok"
-            status_code = status.HTTP_200_OK
+            status_code    = status.HTTP_200_OK
+            status_message = "ok"
+            message        = "Se decremento en uno la cantidad"
         else:
-            status_code = status.HTTP_400_BAD_REQUEST
-            status_message = "Error"
-            message = "Este cupon ya fue usado"
-        response_message = {"status":status_message, "message":message}
-        return Response(response_message, status=status_code)
+            status_code    = status.HTTP_400_BAD_REQUEST
+            status_message = "error"
+            message        = "Este cupon ya fue usado"
 
+        response_message   = {
+            "status": status_message, 
+            "message":message
+        }
 
-
+        return Response(response_message, status = status_code)

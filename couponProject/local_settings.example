@@ -1,0 +1,20 @@
+from couponProject.settings import *
+
+SECRET_KEY     = 'A SECRET KEY'
+DEBUG          = True
+TEMPLATE_DEBUG = DEBUG
+
+
+DATABASES = {
+    'default': {
+        'ENGINE':      'django.db.backends.mysql',
+        'NAME':        'DATABASE NAME',
+        'USER':        'DATABASE USER',
+        'PASSWORD':    'DATABASE PASSWORD',
+        'HOST':        'localhost',
+        'OPTIONS': {
+            'charset': 'utf8mb4'
+        }
+    }
+}
+
