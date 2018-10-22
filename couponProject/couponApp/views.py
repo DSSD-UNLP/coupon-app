@@ -29,12 +29,13 @@ class CouponDetail(APIView):
 
         return Response(serializer.data, status = status.HTTP_200_OK)
         
-    def delete(self, request, name, format = None):
+    def delete(self, request, name):
         coupon     = get_object_or_404(Coupon, name = name)
         serializer = CouponSerializer(coupon)
         coupon.delete()
 
-        return Response(serializer.data, status = status.HTTP_204_NO_CONTENT)
+        return Response({"status": "ok"}, status = status.HTTP_204_NO_CONTENT)
+        # return Response(serializer.data, status = status.HTTP_204_NO_CONTENT)
 
     def patch(self,request,name):
         coupon = get_object_or_404(Coupon, name = name)
