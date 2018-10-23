@@ -11,7 +11,7 @@ import code
 
 class CouponCreate(APIView):
     
-    def post(self, request, format = None):
+    def post(self, request):
         serializer = CouponSerializer(data = request.data)
 
         if not serializer.is_valid():
@@ -39,7 +39,7 @@ class CouponDetail(APIView):
     def patch(self,request,name):
         coupon = get_object_or_404(Coupon, name = name)
         if coupon.availability > 0:
-            coupon.availability = coupon.availability - 1
+            coupon.availability = (coupon.availability - 1)
             coupon.save()
             status_code    = status.HTTP_200_OK
             status_message = "ok"
