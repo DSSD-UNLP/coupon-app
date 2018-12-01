@@ -45,7 +45,7 @@ class CouponDetail(APIView):
 
         return Response(serializer.data, status = status.HTTP_200_OK)
 
-    def patch(self,request,name):
+    def put(self,request,name):
         coupon = get_object_or_404(Coupon, name = name)
         if coupon.availability > 0:
             coupon.availability = (coupon.availability - 1)
