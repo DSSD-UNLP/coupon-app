@@ -24,7 +24,16 @@ class CouponCreate(APIView):
 class CouponDetail(APIView):
 
     def get(self, request, name):
-        coupon     = get_object_or_404(Coupon, name = name)
+        try:
+                coupon = Coupon.objects.get(name = name)
+        except Coupon.DoesNotExist:
+            response_message = {
+                "status":"error", 
+                "message":"Coupon not exists"
+            }
+            response_status = status.HTTP_200_OK
+
+            return Response(response_message, status=response_status)
         serializer = CouponSerializer(coupon)
 
         return Response(serializer.data, status = status.HTTP_200_OK)
